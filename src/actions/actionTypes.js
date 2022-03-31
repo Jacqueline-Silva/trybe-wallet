@@ -1,3 +1,5 @@
 export const SAVE_EMAIL = 'SAVE_EMAIL';
 
-export const SAVE_SEILA = 'SAVE_SEILA';
+export const REQUEST_REALIZED = 'REQUEST_REALIZED';
+
+export const GET_CURRENCY = 'GET_CURRENCY';
