@@ -1,5 +1,6 @@
 export const SAVE_EMAIL = 'SAVE_EMAIL';
+export const SAVE_EXPENSE = 'SAVE_EXPENSE';
 
 export const REQUEST_REALIZED = 'REQUEST_REALIZED';
-
+export const REQUEST_FAILURE = 'REQUEST_FAILURE';
 export const GET_CURRENCY = 'GET_CURRENCY';
