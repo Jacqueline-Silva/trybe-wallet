@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import table from './css/table.css';
 
 class Table extends Component {
   transform(expense) {
@@ -16,7 +15,7 @@ class Table extends Component {
 
     return (
       <div>
-        <table className="table">
+        <table>
           <caption>
             <h2> Tabela de Gastos </h2>
           </caption>
@@ -50,8 +49,20 @@ class Table extends Component {
                   <td>{ (expense.value * this.transform(expense)).toFixed(2) }</td>
                   <td>Real</td>
                   <td>
-                    <button type="button" name={ expense.id }>Editar</button>
-                    <button type="reset" name={ expense.id }>Excluir</button>
+                    <button
+                      type="button"
+                      name={ expense.id }
+                      data-testid="edit-btn"
+                    >
+                      Editar despesa
+                    </button>
+                    <button
+                      type="reset"
+                      name={ expense.id }
+                      data-testid="delete-btn"
+                    >
+                      Excluir
+                    </button>
                   </td>
                 </tr>
               ))
