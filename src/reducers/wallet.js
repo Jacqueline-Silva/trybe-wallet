@@ -4,7 +4,6 @@ import { GET_CURRENCY, SAVE_EXPENSE } from '../actions/actionTypes';
 const INITIAL_STATE = {
   currencies: [],
   expenses: [],
-  ask: 0,
 };
 
 const wallet = (state = INITIAL_STATE, action) => {
