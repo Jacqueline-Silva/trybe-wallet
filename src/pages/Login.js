@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { saveEmail } from '../actions';
+import '../css/login.css';
 
 class Login extends React.Component {
   constructor() {
@@ -39,37 +40,39 @@ class Login extends React.Component {
 
   render() {
     return (
-      <div>
-        <h1> Login </h1>
+      <div className="login">
+        <div className="login-box">
+          <h1> Login </h1>
+          <label htmlFor="email-input" className="login-label">
+            Email
+            <input
+              type="email"
+              name="email"
+              data-testid="email-input"
+              onChange={ this.handleChange }
+              className="login-input"
+            />
+          </label>
+          <label htmlFor="password-input" className="login-label">
+            Senha
+            <input
+              type="password"
+              name="pass"
+              data-testid="password-input"
+              onChange={ this.handleChange }
+              className="login-input"
+            />
+          </label>
 
-        <label htmlFor="email-input">
-          Email:
-          <input
-            type="email"
-            name="email"
-            placeholder="Digite seu email"
-            data-testid="email-input"
-            onChange={ this.handleChange }
-          />
-        </label>
-        <label htmlFor="password-input">
-          Senha:
-          <input
-            type="password"
-            name="pass"
-            placeholder="Digite sua senha"
-            data-testid="password-input"
-            onChange={ this.handleChange }
-          />
-        </label>
-
-        <button
-          type="submit"
-          disabled={ this.validate() }
-          onClick={ this.handleClick }
-        >
-          Entrar
-        </button>
+          <button
+            type="submit"
+            disabled={ this.validate() }
+            onClick={ this.handleClick }
+            className="login-button"
+          >
+            Entrar
+          </button>
+        </div>
       </div>
     );
   }

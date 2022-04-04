@@ -1,10 +1,12 @@
 // Coloque aqui suas actions
 import {
   GET_CURRENCY,
+  ATT_EXPENSES,
   REQUEST_FAILURE,
   REQUEST_REALIZED,
   SAVE_EMAIL,
   SAVE_EXPENSE,
+  REMOVE_EXPENSE,
 } from './actionTypes';
 
 const requestRealized = () => ({ type: REQUEST_REALIZED });
@@ -18,6 +20,17 @@ export const saveEmail = (email) => ({
 export const saveExpense = (state) => ({
   type: SAVE_EXPENSE,
   expense: state,
+});
+
+export const attExpenses = (expensesAtt) => ({
+  type: ATT_EXPENSES,
+  expensesAtt,
+});
+
+export const removeExpense = (expense, listAtt) => ({
+  type: REMOVE_EXPENSE,
+  expense,
+  listAtt,
 });
 
 export const getCurrency = (data) => ({
