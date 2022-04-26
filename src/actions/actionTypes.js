@@ -1,8 +1,10 @@
 export const SAVE_EMAIL = 'SAVE_EMAIL';
 export const SAVE_EXPENSE = 'SAVE_EXPENSE';
 
-export const ATT_EXPENSES = 'ATT_EXPENSES';
+export const SELECTED_EXPENSE = 'SELECTED_EXPENSE';
 
+export const ATT_EXPENSES = 'ATT_EXPENSES';
+export const EDIT_EXPENSE = 'EDIT_EXPENSE';
 export const REMOVE_EXPENSE = 'REMOVE_EXPENSE';
 
 export const REQUEST_REALIZED = 'REQUEST_REALIZED';

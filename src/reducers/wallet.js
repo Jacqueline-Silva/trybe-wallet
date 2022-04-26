@@ -3,6 +3,8 @@ import {
   ATT_EXPENSES,
   SAVE_EXPENSE,
   REMOVE_EXPENSE,
+  EDIT_EXPENSE,
+  SELECTED_EXPENSE,
 } from '../actions/actionTypes';
 
 // Esse reducer será responsável por tratar o todas as informações relacionadas as despesas
@@ -10,7 +12,8 @@ const INITIAL_STATE = {
   currencies: [],
   expenses: [],
   removed: [],
-  ask: 0,
+  editExpense: false,
+  expenseSelected: [],
 };
 
 const wallet = (state = INITIAL_STATE, action) => {
@@ -28,13 +31,27 @@ const wallet = (state = INITIAL_STATE, action) => {
   case ATT_EXPENSES:
     return {
       ...state,
-      expenses: action.expenses,
+      // expenses: [...state.expenses, action.expensesAtt],
+      expenses: state.expenses.map((e) => {
+        if (e.id === action.expensesAtt.id) return action.expensesAtt;
+        return state.expenses;
+      }),
     };
   case REMOVE_EXPENSE:
     return {
       ...state,
       removed: action.expense,
       expenses: action.listAtt,
+    };
+  case EDIT_EXPENSE:
+    return {
+      ...state,
+      editExpense: action.bool,
+    };
+  case SELECTED_EXPENSE:
+    return {
+      ...state,
+      expenseSelected: action.expense,
     };
   default:
     return state;

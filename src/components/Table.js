@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { attExpenses, removeExpense } from '../actions';
+import { removeExpense, editExpense, selectExpense } from '../actions';
 import '../css/table.css';
 
 class Table extends Component {
@@ -11,8 +11,15 @@ class Table extends Component {
 
     const listExpensesAtt = expenses.filter((e) => e.id !== +(name));
     const expenseSelected = expenses.filter((e) => e.id === +(name));
-    // savingExpensesAtt(listExpensesAtt);
+
     removedExpense(expenseSelected, listExpensesAtt);
+  }
+
+  attExpense = (expense) => {
+    const { btnEditExpense, savingEdit } = this.props;
+
+    savingEdit(expense);
+    btnEditExpense(true);
   }
 
   transform(expense) {
@@ -67,8 +74,9 @@ class Table extends Component {
                         type="button"
                         name={ expense.id }
                         data-testid="edit-btn"
+                        onClick={ () => this.attExpense(expense) }
                       >
-                        Editar despesa
+                        Editar
                       </button>
                       <button
                         type="reset"
@@ -90,19 +98,20 @@ class Table extends Component {
 }
 
 Table.propTypes = {
-  expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
-  // savingExpensesAtt: PropTypes.func.isRequired,
-  removedExpense: PropTypes.func.isRequired,
-};
+  expenses: PropTypes.arrayOf(PropTypes.object),
+  removedExpense: PropTypes.func,
+}.isRequired;
 
 const mapStateToProps = (store) => ({
   expenses: store.wallet.expenses,
   expensesAtt: store.wallet.listExpensesAtt,
+  editExpenseBool: store.wallet.editExpense,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  savingExpensesAtt: (state) => dispatch(attExpenses(state)),
   removedExpense: (state, list) => dispatch(removeExpense(state, list)),
+  btnEditExpense: (state) => dispatch(editExpense(state)),
+  savingEdit: (state) => dispatch(selectExpense(state)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Table);

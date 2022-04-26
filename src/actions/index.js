@@ -7,6 +7,8 @@ import {
   SAVE_EMAIL,
   SAVE_EXPENSE,
   REMOVE_EXPENSE,
+  EDIT_EXPENSE,
+  SELECTED_EXPENSE,
 } from './actionTypes';
 
 const requestRealized = () => ({ type: REQUEST_REALIZED });
@@ -25,6 +27,16 @@ export const saveExpense = (state) => ({
 export const attExpenses = (expensesAtt) => ({
   type: ATT_EXPENSES,
   expensesAtt,
+});
+
+export const editExpense = (bool) => ({
+  type: EDIT_EXPENSE,
+  bool,
+});
+
+export const selectExpense = (expense) => ({
+  type: SELECTED_EXPENSE,
+  expense,
 });
 
 export const removeExpense = (expense, listAtt) => ({

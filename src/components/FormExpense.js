@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { objectCurrencies } from '../actions';
+import { objectCurrencies, editExpense, selectExpense, attExpenses } from '../actions';
 import '../css/formExpense.css';
 
 class FormExpense extends React.Component {
@@ -14,6 +14,7 @@ class FormExpense extends React.Component {
       currency: '',
       method: '',
       tag: '',
+      id: 0,
     };
   }
 
@@ -23,19 +24,43 @@ class FormExpense extends React.Component {
     });
   };
 
-  handleClick = () => {
-    const { savingExpense, expenses } = this.props;
-    savingExpense({ ...this.state, id: expenses.length });
+  handleClick = ({ target }) => {
+    const { name } = target;
+    const {
+      savingExpense,
+      btnEditExpense,
+      expenseSelected,
+      savingEdit,
+      savingExpensesEdit } = this.props;
 
-    this.setState({
-      value: 0,
-      description: '',
-    });
+    if (name === 'add') {
+      savingExpense({ ...this.state });
+
+      this.setState((prev) => ({
+        value: 0,
+        description: '',
+        id: prev.id + 1,
+      }));
+    }
+    if (name === 'edit') {
+      const { value, description, method, tag } = this.state;
+
+      savingEdit({ ...expenseSelected, value, description, tag, method });
+      btnEditExpense(false);
+
+      savingExpensesEdit({
+        ...expenseSelected,
+        value,
+        description,
+        tag,
+        method,
+      });
+    }
   };
 
   render() {
-    const { value, description } = this.state;
-    const { currencies } = this.props;
+    const { value, description, method, tag, currency } = this.state;
+    const { currencies, editExpenseBool } = this.props;
 
     return (
       <div>
@@ -62,7 +87,12 @@ class FormExpense extends React.Component {
           </label>
           <label htmlFor="moeda">
             Moeda
-            <select id="moeda" name="currency" onChange={ this.handleChange }>
+            <select
+              id="moeda"
+              name="currency"
+              onChange={ this.handleChange }
+              value={ currency }
+            >
               {
                 currencies.map((coin) => (
                   <option key={ coin }>{ coin }</option>
@@ -76,11 +106,12 @@ class FormExpense extends React.Component {
               id="method-input"
               data-testid="method-input"
               name="method"
+              value={ method }
               onChange={ this.handleChange }
             >
-              <option>Dinheiro</option>
-              <option>Cartão de crédito</option>
-              <option>Cartão de débito</option>
+              <option value="Dinheiro">Dinheiro</option>
+              <option value="Cartão de crédito">Cartão de crédito</option>
+              <option value="Cartão de débito">Cartão de débito</option>
             </select>
           </label>
           <label htmlFor="tag-input">
@@ -90,20 +121,23 @@ class FormExpense extends React.Component {
               data-testid="tag-input"
               name="tag"
               onChange={ this.handleChange }
+              value={ tag }
             >
-              <option selected>Alimentação</option>
-              <option>Lazer</option>
-              <option>Trabalho</option>
-              <option>Transporte</option>
-              <option>Saúde</option>
+              <option value="Alimentação">Alimentação</option>
+              <option value="Lazer">Lazer</option>
+              <option value="Trabalho">Trabalho</option>
+              <option value="Transporte">Transporte</option>
+              <option value="Saúde">Saúde</option>
             </select>
           </label>
 
           <button
             type="button"
+            name={ editExpenseBool ? 'edit' : 'add' }
             onClick={ this.handleClick }
+            data-testid="currency-input"
           >
-            Adicionar despesa
+            { editExpenseBool ? 'Editar despesa' : 'Adicionar despesa' }
           </button>
         </form>
       </div>
@@ -112,18 +146,26 @@ class FormExpense extends React.Component {
 }
 
 FormExpense.propTypes = ({
-  currencies: PropTypes.arrayOf.isRequired,
+  currencies: PropTypes.arrayOf(PropTypes.string),
   savingExpense: PropTypes.func.isRequired,
-  expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
-});
+  expenses: PropTypes.arrayOf(PropTypes.object),
+  method: PropTypes.string,
+  tag: PropTypes.string,
+  currency: PropTypes.string,
+}.isRequired);
 
 const mapStateToProps = (store) => ({
   currencies: store.wallet.currencies,
   expenses: store.wallet.expenses,
+  editExpenseBool: store.wallet.editExpense,
+  expenseSelected: store.wallet.expenseSelected,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   savingExpense: (state) => dispatch(objectCurrencies(state)),
+  btnEditExpense: (state) => dispatch(editExpense(state)),
+  savingEdit: (state) => dispatch(selectExpense(state)),
+  savingExpensesEdit: (state) => dispatch(attExpenses(state)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(FormExpense);
