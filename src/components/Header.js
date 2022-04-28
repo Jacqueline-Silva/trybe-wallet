@@ -6,9 +6,9 @@ import '../css/header.css';
 class Header extends React.Component {
   totalExpenses(expenses) {
     const total = expenses.reduce((acc, expense) => {
-      const subTotal = expense.value * expense.exchangeRates[expense.currency].ask;
+      const subTotal = +expense.value * +expense.exchangeRates[expense.currency].ask;
       acc += subTotal;
-      return +(acc);
+      return +acc;
     }, 0);
 
     return total.toFixed(2);
@@ -28,7 +28,7 @@ class Header extends React.Component {
             R$
             <p data-testid="total-field">
               {
-                expenses.length === 0
+                (expenses === undefined || expenses.length === 0)
                   ? 0
                   : this.totalExpenses(expenses)
               }

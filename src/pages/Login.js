@@ -79,9 +79,9 @@ class Login extends React.Component {
 }
 
 Login.propTypes = ({
-  savingEmail: PropTypes.string.isRequired,
-  history: PropTypes.objectOf(PropTypes.func).isRequired,
-});
+  savingEmail: PropTypes.func,
+  history: PropTypes.objectOf(PropTypes.number),
+}).isRequired;
 
 const mapDispatchToProps = (dispatch) => ({
   savingEmail: (state) => dispatch(saveEmail(state)),

@@ -7,22 +7,36 @@ import { requestCurrencies } from '../actions';
 import Table from '../components/Table';
 
 class Wallet extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      expenseSelected: [],
+    };
+  }
+
   componentDidMount() {
     const { initialRequest } = this.props;
     initialRequest();
   }
 
+  getExpenseSelected = (expense) => {
+    this.setState({
+      expenseSelected: expense,
+    });
+  }
+
   render() {
+    const { expenseSelected } = this.state;
     return (
       <div>
         <div>
           <Header />
         </div>
         <div>
-          <FormExpense />
+          <FormExpense state={ expenseSelected } />
         </div>
         <div>
-          <Table />
+          <Table getExpense={ this.getExpenseSelected } />
         </div>
       </div>
     );
@@ -30,8 +44,8 @@ class Wallet extends React.Component {
 }
 
 Wallet.propTypes = ({
-  initialRequest: PropTypes.func.isRequired,
-});
+  initialRequest: PropTypes.func,
+}).isRequired;
 
 const mapDispatchToProps = (dispatch) => ({
   initialRequest: () => dispatch(requestCurrencies()),

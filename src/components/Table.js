@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { removeExpense, editExpense, selectExpense } from '../actions';
+import { removeExpense, editExpense } from '../actions';
 import '../css/table.css';
 
 class Table extends Component {
@@ -16,14 +16,13 @@ class Table extends Component {
   }
 
   attExpense = (expense) => {
-    const { btnEditExpense, savingEdit } = this.props;
+    const { btnEditExpense, getExpense } = this.props;
 
-    savingEdit(expense);
+    getExpense(expense);
     btnEditExpense(true);
   }
 
-  transform(expense) {
-    const { currency, exchangeRates } = expense;
+  transform({ currency, exchangeRates }) {
     const askValue = +(exchangeRates[currency].ask);
     return askValue;
   }
@@ -56,17 +55,9 @@ class Table extends Component {
                     <td>{ expense.description }</td>
                     <td>{ expense.tag }</td>
                     <td>{ expense.method }</td>
-                    <td>
-                      {
-                        expense.value.length === 2
-                          ? `${expense.value}.00`
-                          : expense.value
-                      }
-                    </td>
-                    <td>
-                      { expense.exchangeRates[expense.currency].name.split('/')[0]}
-                    </td>
-                    <td>{ this.transform(expense).toFixed(2) }</td>
+                    <td>{`${expense.value}.00`}</td>
+                    <td>{ expense.exchangeRates[expense.currency].name.split('/')[0]}</td>
+                    <td>{ (this.transform(expense)).toFixed(2) }</td>
                     <td>{ (expense.value * this.transform(expense)).toFixed(2) }</td>
                     <td>Real</td>
                     <td>
@@ -111,7 +102,6 @@ const mapStateToProps = (store) => ({
 const mapDispatchToProps = (dispatch) => ({
   removedExpense: (state, list) => dispatch(removeExpense(state, list)),
   btnEditExpense: (state) => dispatch(editExpense(state)),
-  savingEdit: (state) => dispatch(selectExpense(state)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Table);

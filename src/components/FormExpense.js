@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { objectCurrencies, editExpense, selectExpense, attExpenses } from '../actions';
+import { objectCurrencies, editExpense, attExpenses } from '../actions';
 import '../css/formExpense.css';
 
 class FormExpense extends React.Component {
@@ -10,10 +10,10 @@ class FormExpense extends React.Component {
 
     this.state = {
       value: 0,
-      description: '',
-      currency: '',
-      method: '',
-      tag: '',
+      description: 'teste',
+      currency: 'USD',
+      method: 'Dinheiro',
+      tag: 'Alimentação',
       id: 0,
     };
   }
@@ -29,8 +29,7 @@ class FormExpense extends React.Component {
     const {
       savingExpense,
       btnEditExpense,
-      expenseSelected,
-      savingEdit,
+      state,
       savingExpensesEdit } = this.props;
 
     if (name === 'add') {
@@ -45,16 +44,9 @@ class FormExpense extends React.Component {
     if (name === 'edit') {
       const { value, description, method, tag } = this.state;
 
-      savingEdit({ ...expenseSelected, value, description, tag, method });
+      const att = ({ ...state, value, description, tag, method });
       btnEditExpense(false);
-
-      savingExpensesEdit({
-        ...expenseSelected,
-        value,
-        description,
-        tag,
-        method,
-      });
+      savingExpensesEdit(att);
     }
   };
 
@@ -90,6 +82,7 @@ class FormExpense extends React.Component {
             <select
               id="moeda"
               name="currency"
+              data-testid="currency-input"
               onChange={ this.handleChange }
               value={ currency }
             >
@@ -135,7 +128,6 @@ class FormExpense extends React.Component {
             type="button"
             name={ editExpenseBool ? 'edit' : 'add' }
             onClick={ this.handleClick }
-            data-testid="currency-input"
           >
             { editExpenseBool ? 'Editar despesa' : 'Adicionar despesa' }
           </button>
@@ -158,13 +150,11 @@ const mapStateToProps = (store) => ({
   currencies: store.wallet.currencies,
   expenses: store.wallet.expenses,
   editExpenseBool: store.wallet.editExpense,
-  expenseSelected: store.wallet.expenseSelected,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   savingExpense: (state) => dispatch(objectCurrencies(state)),
   btnEditExpense: (state) => dispatch(editExpense(state)),
-  savingEdit: (state) => dispatch(selectExpense(state)),
   savingExpensesEdit: (state) => dispatch(attExpenses(state)),
 });
 
